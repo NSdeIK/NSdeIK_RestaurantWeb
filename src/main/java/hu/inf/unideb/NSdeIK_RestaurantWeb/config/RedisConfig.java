@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
+@EnableRedisRepositories
 public class RedisConfig
 {
     @Value("${redis.host}")
@@ -16,13 +18,13 @@ public class RedisConfig
     @Value("${redis.port}")
     Integer port;
 
-    @Value("${redis.password}")
-    String password;
+    //@Value("${redis.password}")
+    //String password;
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory(){
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host,port);
-        config.setPassword(password);
+        //config.setPassword(password);
         return new JedisConnectionFactory(config);
     }
 
