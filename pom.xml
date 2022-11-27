@@ -12,16 +12,28 @@
 	<artifactId>NSdeIK_RestaurantWeb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NSdeIK_RestaurantWeb</name>
-	<description>Webfejlesztés beadandó projekt - Debreceni Egyetem</description>
+	<description>Webfejlesztés beadandó projekt - Debreceni Egyetem, Informatikai Kar</description>
+
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 	</properties>
+
+	<developers>
+		<developer>
+			<id>nagysandor</id>
+			<name>Nagy Sándor</name>
+			<organization>Debreceni Egyetem, Informatikai Kar</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -54,6 +66,15 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 

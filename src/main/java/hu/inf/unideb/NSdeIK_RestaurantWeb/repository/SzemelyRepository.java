@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SzemelyRepository extends CrudRepository<SzemelyEntity, String> {
-
+    SzemelyEntity findByFelhasznalonev(String felhasznalonev);
 }

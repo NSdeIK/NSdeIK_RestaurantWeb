@@ -2,6 +2,7 @@ package hu.inf.unideb.NSdeIK_RestaurantWeb.controller;
 
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.SzemelyDto;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.enums.SzemelyPosztok;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.security.JWT.JWTUserDetailsService;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.service.SzemelyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,22 +16,10 @@ import java.util.List;
 public class SzemelyController
 {
     @Autowired
-    SzemelyService szemelyService;
+    private SzemelyService szemelyService;
 
-    @GetMapping("/initDb")
-    public ResponseEntity initDb(){
-        try{
-            szemelyService.szemelyMentes(
-                    SzemelyDto.builder()
-                            .szemely_nev("Tulajdonos Neve")
-                            .szemely_poszt(SzemelyPosztok.TULAJDONOS)
-                            .build()
-            );
-        }catch(Exception e){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
+    @Autowired
+    private JWTUserDetailsService jwtUserDetailsService;
 
     @GetMapping("/szemelyek")
     public ResponseEntity<List<SzemelyDto>> getSzemelyek(){
@@ -43,23 +32,16 @@ public class SzemelyController
     }
 
     @PostMapping("/addPincer")
-    public ResponseEntity<SzemelyDto> savePincer(@RequestBody(required = true) SzemelyDto szemelyDto){
-        if(!szemelyDto.getSzemely_nev().isEmpty())
-        {
-            szemelyDto.setSzemely_poszt(SzemelyPosztok.PINCER);
-            return new ResponseEntity<>(szemelyService.szemelyMentes(szemelyDto), HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> savePincer(@RequestBody SzemelyDto szemelyDto)
+    {
+        szemelyDto.setSzemely_poszt(SzemelyPosztok.PINCER);
+        return ResponseEntity.ok(jwtUserDetailsService.save(szemelyDto));
     }
 
     @PostMapping("/addSzakacs")
-    public ResponseEntity<SzemelyDto> saveSzakacs(@RequestParam(required = true) SzemelyDto szemelyDto){
-        if(!szemelyDto.getSzemely_nev().isEmpty())
-        {
-            szemelyDto.setSzemely_poszt(SzemelyPosztok.SZAKACS);
-            return new ResponseEntity<>(szemelyService.szemelyMentes(szemelyDto), HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> saveSzakacs(@RequestBody SzemelyDto szemelyDto){
+        szemelyDto.setSzemely_poszt(SzemelyPosztok.SZAKACS);
+        return ResponseEntity.ok(jwtUserDetailsService.save(szemelyDto));
     }
 
     @DeleteMapping("/szemelyTorles")
