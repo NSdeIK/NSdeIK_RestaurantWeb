@@ -27,7 +27,7 @@ public class SzemelyController
     }
 
     @GetMapping("/szemely")
-    public ResponseEntity<SzemelyDto> getSzemely(@RequestParam(required = true) String id){
+    public ResponseEntity<SzemelyDto> getSzemely(@RequestParam String id){
         return new ResponseEntity<>(szemelyService.getById(id), HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class SzemelyController
     }
 
     @DeleteMapping("/szemelyTorles")
-    public ResponseEntity deleteSzemely(@RequestParam(required = true) String id) {
+    public ResponseEntity deleteSzemely(@RequestParam String id) {
         szemelyService.szemelyTorles(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

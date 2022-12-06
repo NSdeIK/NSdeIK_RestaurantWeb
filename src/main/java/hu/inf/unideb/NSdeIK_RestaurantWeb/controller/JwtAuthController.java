@@ -10,11 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 public class JwtAuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -26,7 +30,7 @@ public class JwtAuthController {
     @Autowired
     SzemelyRepository szemelyRepository;
 
-    @PostMapping(("/bejelentkezes"))
+    @PostMapping("/bejelentkezes")
     public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest authRequest){
         if(szemelyRepository.findByFelhasznalonev(authRequest.getFelhasznalonev()) == null)
         {
@@ -40,7 +44,8 @@ public class JwtAuthController {
 
         UserDetails userdetails = userDetailsService.loadUserByUsername(authRequest.getFelhasznalonev());
         String token = jwtUtil.generateToken(userdetails);
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+        List<String> roles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        return ResponseEntity.ok(new AuthenticationResponse(token, roles.get(0)));
     }
 
     private void authenticate(String felhasznalonev, String jelszo) {

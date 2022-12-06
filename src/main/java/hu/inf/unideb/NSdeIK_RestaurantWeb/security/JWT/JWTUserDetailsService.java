@@ -29,7 +29,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         List<SimpleGrantedAuthority> roles = null;
         SzemelyEntity szemely = szemelyRepository.findByFelhasznalonev(felhasznalonev);
         if (szemely == null) {
-            throw new UsernameNotFoundException("User not found with username: " + felhasznalonev);
+            throw new UsernameNotFoundException("Nem létezik ez a(z) " + felhasznalonev + " felhasználónév!");
         }else{
             roles = Arrays.asList(new SimpleGrantedAuthority(szemely.getSzemely_poszt().toString()));
             return new User(szemely.getFelhasznalonev(), szemely.getJelszo(), roles);
