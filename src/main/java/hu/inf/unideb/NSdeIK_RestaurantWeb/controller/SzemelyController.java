@@ -44,10 +44,10 @@ public class SzemelyController
         return ResponseEntity.ok(jwtUserDetailsService.save(szemelyDto));
     }
 
-    @DeleteMapping("/szemelyTorles")
-    public ResponseEntity deleteSzemely(@RequestParam String id) {
+    @RequestMapping(value = "/szemelyTorles/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteSzemely(@PathVariable("id") String id) {
         szemelyService.szemelyTorles(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("",HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/szemelyFrissites")

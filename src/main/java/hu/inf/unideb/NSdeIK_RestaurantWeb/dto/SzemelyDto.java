@@ -18,6 +18,5 @@ public class SzemelyDto implements Serializable {
     private String szemely_nev;
     private SzemelyPosztok szemely_poszt;
     private String felhasznalonev;
-    @JsonIgnore
     private String jelszo;
 }
