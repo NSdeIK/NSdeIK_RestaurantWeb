@@ -73,6 +73,7 @@ public class WebSecurityConfig{
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers("/api/*").hasRole("TULAJDONOS")
+                .and().authorizeRequests().antMatchers(HttpMethod.GET,"/api/asztalok").hasRole("PINCER")
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .antMatchers("/bejelentkezes").permitAll().anyRequest().authenticated()
                 .and().formLogin().disable();
