@@ -72,8 +72,8 @@ public class WebSecurityConfig{
         http.cors().and().httpBasic().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests().antMatchers("/api/*").hasRole("TULAJDONOS")
-                .and().authorizeRequests().antMatchers(HttpMethod.GET,"/api/asztalok").hasRole("PINCER")
+                .and().authorizeRequests().antMatchers("/api/admin/*").hasAuthority("ROLE_TULAJDONOS")
+                .and().authorizeRequests().antMatchers(HttpMethod.GET,"/api/asztalok").hasAnyRole("PINCER","TULAJDONOS")
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .antMatchers("/bejelentkezes").permitAll().anyRequest().authenticated()
                 .and().formLogin().disable();

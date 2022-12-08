@@ -21,14 +21,14 @@ public class AsztalController {
         return new ResponseEntity<>(asztalService.osszes(), HttpStatus.OK);
     }
 
-    @PostMapping("/ujAsztal")
+    @PostMapping("/admin/ujAsztal")
     public ResponseEntity<?> ujAsztal(@RequestBody AsztalDto asztalDto)
     {
 
         return new ResponseEntity<>(asztalService.ujAsztal(asztalDto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/asztalTorles/{id}")
+    @DeleteMapping("/admin/asztalTorles/{id}")
     public ResponseEntity<?> asztalTorles(@PathVariable("id") String id) {
         asztalService.asztalTorles(id);
         return new ResponseEntity<>("",HttpStatus.ACCEPTED);
