@@ -1,6 +1,9 @@
 package hu.inf.unideb.NSdeIK_RestaurantWeb.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -9,17 +12,14 @@ import org.springframework.data.redis.core.index.Indexed;
 @AllArgsConstructor
 @Builder
 @Data
-@RedisHash("Asztalok")
-public class AsztalEntity {
+@RedisHash("LefoglaltAsztalok")
+public class AsztalLefoglalEntity {
     @Id
     private String asztal_id;
 
     @Indexed
-    private String asztal_nev;
+    private String kezelo_szemely_id;
 
     @Indexed
-    private Integer maxfo;
-
-    @Indexed
-    private String statusz;
+    private Integer vendegek_szama;
 }

@@ -1,6 +1,7 @@
 package hu.inf.unideb.NSdeIK_RestaurantWeb.controller;
 
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalDto;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalLefoglal;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.service.AsztalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,17 @@ public class AsztalController {
     @GetMapping("/asztalok")
     public ResponseEntity<List<AsztalDto>> getAsztalok(){
         return new ResponseEntity<>(asztalService.osszes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/asztal/{id}")
+    public ResponseEntity<?> getAsztal(@PathVariable("id") String id){
+        return new ResponseEntity<>(asztalService.getAsztal(id),HttpStatus.OK);
+    }
+
+    @PostMapping("/asztal_lefoglalas")
+    public ResponseEntity<?> LefoglalAsztal(@RequestBody AsztalLefoglal asztalLefoglal){
+        asztalService.lefoglalAsztal(asztalLefoglal);
+        return new ResponseEntity<>(asztalService.getAsztal(asztalLefoglal.getAsztal_id()), HttpStatus.OK);
     }
 
     @PostMapping("/admin/ujAsztal")
