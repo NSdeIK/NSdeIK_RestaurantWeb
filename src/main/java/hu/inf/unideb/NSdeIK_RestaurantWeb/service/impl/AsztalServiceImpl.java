@@ -2,12 +2,10 @@ package hu.inf.unideb.NSdeIK_RestaurantWeb.service.impl;
 
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalDto;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalLefoglal;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.entity.AsztalEntity;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.entity.AsztalLefoglalEntity;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.entity.SzemelyEntity;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.repository.AsztalLefoglalRepository;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.repository.AsztalRepository;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.repository.SzemelyRepository;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.MegrendelesDto;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.MegrendelesVarolistaDto;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.entity.*;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.repository.*;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.service.AsztalService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,12 @@ public class AsztalServiceImpl implements AsztalService {
 
     @Autowired
     AsztalLefoglalRepository lefoglalRepository;
+
+    @Autowired
+    MegrendelesVarolistaRepository megrendelesVarolistaRepository;
+
+    @Autowired
+    MegrendelesRepository megrendelesRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -67,6 +71,8 @@ public class AsztalServiceImpl implements AsztalService {
                     map.put("vendegek_szama", lefoglaltAsztal.get().getVendegek_szama());
                     map.put("maxfo", asztalDto.getMaxfo());
                     map.put("statusz", asztalDto.getStatusz());
+                    map.put("varolista", megrendelesVarolistaRepository.findAllByAsztalid(id));
+                    map.put("megrendelesek", megrendelesRepository.findAllByAsztalid(id));
                     return map;
                 }
             }
@@ -74,7 +80,6 @@ public class AsztalServiceImpl implements AsztalService {
         }
         return asztalDto;
     }
-
 
     @Override
     public AsztalLefoglal lefoglalAsztal(AsztalLefoglal asztal) {
@@ -92,6 +97,20 @@ public class AsztalServiceImpl implements AsztalService {
     @Override
     public void asztalTorles(String id){
         asztalRepository.deleteById(id);
+    }
+
+    @Override
+    public MegrendelesVarolistaDto ujMegrendelesVarolista(MegrendelesVarolistaDto megrendelesVarolistaDto) {
+        MegrendelesVarolistaEntity megrendelesEntity = modelMapper.map(megrendelesVarolistaDto,MegrendelesVarolistaEntity.class);
+        megrendelesEntity = megrendelesVarolistaRepository.save(megrendelesEntity);
+        return modelMapper.map(megrendelesEntity, MegrendelesVarolistaDto.class);
+    }
+
+    @Override
+    public MegrendelesDto ujMegrendeles(MegrendelesDto megrendelesDto) {
+        MegrendelesEntity megrendelesEntity = modelMapper.map(megrendelesDto,MegrendelesEntity.class);
+        megrendelesEntity = megrendelesRepository.save(megrendelesEntity);
+        return modelMapper.map(megrendelesEntity, MegrendelesDto.class);
     }
 
 }

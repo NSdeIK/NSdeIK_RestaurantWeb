@@ -2,6 +2,8 @@ package hu.inf.unideb.NSdeIK_RestaurantWeb.controller;
 
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalDto;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalLefoglal;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.MegrendelesDto;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.MegrendelesVarolistaDto;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.service.AsztalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +38,6 @@ public class AsztalController {
     @PostMapping("/admin/ujAsztal")
     public ResponseEntity<?> ujAsztal(@RequestBody AsztalDto asztalDto)
     {
-
         return new ResponseEntity<>(asztalService.ujAsztal(asztalDto), HttpStatus.OK);
     }
 
@@ -44,6 +45,18 @@ public class AsztalController {
     public ResponseEntity<?> asztalTorles(@PathVariable("id") String id) {
         asztalService.asztalTorles(id);
         return new ResponseEntity<>("",HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/asztal_ujmegrendelesvarolista")
+    public ResponseEntity<?> ujMegrendelesVarolista(@RequestBody MegrendelesVarolistaDto megrendelesVarolistaDto)
+    {
+        return new ResponseEntity<>(asztalService.ujMegrendelesVarolista(megrendelesVarolistaDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/asztal_ujmegrendeles")
+    public ResponseEntity<?> ujMegrendeles(@RequestBody MegrendelesDto megrendelesDto)
+    {
+        return new ResponseEntity<>(asztalService.ujMegrendeles(megrendelesDto), HttpStatus.OK);
     }
 
 }
