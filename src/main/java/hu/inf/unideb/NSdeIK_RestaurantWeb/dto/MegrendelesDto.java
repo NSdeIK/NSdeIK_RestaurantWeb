@@ -1,9 +1,6 @@
 package hu.inf.unideb.NSdeIK_RestaurantWeb.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @RequiredArgsConstructor(staticName = "of")
 @AllArgsConstructor
@@ -17,6 +14,6 @@ public class MegrendelesDto {
     private String megrendeles_id;
     private String megrendeles_neve;
     private Integer megrendeles_db;
-    private String megrendeles_ara;
+    private Integer megrendeles_ara;
     private String szakacs;
 }

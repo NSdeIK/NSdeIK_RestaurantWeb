@@ -27,6 +27,11 @@ public class EtlapServiceImpl implements EtlapService {
     }
 
     @Override
+    public void etlapTorles(String id){
+        etlapRepository.deleteById(id);
+    }
+
+    @Override
     public List<EtlapDto> osszesEtlap() {
         List<EtlapDto> etlapDtos = new ArrayList<>();
         for(EtlapEntity etlapEntity : etlapRepository.findAll())

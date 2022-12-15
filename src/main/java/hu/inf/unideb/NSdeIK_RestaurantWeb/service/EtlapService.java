@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface EtlapService {
     EtlapDto etlapMentes(EtlapDto etlapDto);
+    void etlapTorles(String id);
     List<EtlapDto> osszesEtlap();
 
 }

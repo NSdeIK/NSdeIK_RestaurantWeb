@@ -1,9 +1,6 @@
 package hu.inf.unideb.NSdeIK_RestaurantWeb.service.impl;
 
-import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalDto;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.AsztalLefoglal;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.MegrendelesDto;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.MegrendelesVarolistaDto;
+import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.*;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.entity.*;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.repository.*;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.service.AsztalService;
@@ -30,6 +27,12 @@ public class AsztalServiceImpl implements AsztalService {
 
     @Autowired
     MegrendelesRepository megrendelesRepository;
+
+    @Autowired
+    EtlapRepository etlapRepository;
+
+    @Autowired
+    VeglegesitesRepository veglegesitesRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -76,7 +79,6 @@ public class AsztalServiceImpl implements AsztalService {
                     return map;
                 }
             }
-            return "Not Okay";
         }
         return asztalDto;
     }
@@ -97,6 +99,29 @@ public class AsztalServiceImpl implements AsztalService {
     @Override
     public void asztalTorles(String id){
         asztalRepository.deleteById(id);
+        osszesMegrendelesekTorlese(id);
+    }
+
+    protected void osszesMegrendelesekTorlese(String id){
+        List<MegrendelesEntity> lst = megrendelesRepository.findAllByAsztalid(id);
+        lst.forEach(item -> megrendelesRepository.deleteById(item.getId()));
+        List<MegrendelesVarolistaEntity> lst2 = megrendelesVarolistaRepository.findAllByAsztalid(id);
+        lst2.forEach(item -> megrendelesVarolistaRepository.deleteById(item.getId()));
+        lefoglalRepository.deleteById(id);
+    }
+
+    @Override
+    public void veglegesites(VeglegesitesDto veglegesitesDto){
+        VeglegesitesEntity veglegesitesEntity = modelMapper.map(veglegesitesDto,VeglegesitesEntity.class);
+        veglegesitesRepository.save(veglegesitesEntity);
+
+        String id = veglegesitesDto.getAsztal_id();
+        osszesMegrendelesekTorlese(id);
+        Optional<AsztalEntity> asztal = asztalRepository.findById(id);
+        if(asztal.isPresent()){
+            asztal.get().setStatusz("szabad");
+            asztalRepository.save(asztal.get());
+        }
     }
 
     @Override
@@ -111,6 +136,40 @@ public class AsztalServiceImpl implements AsztalService {
         MegrendelesEntity megrendelesEntity = modelMapper.map(megrendelesDto,MegrendelesEntity.class);
         megrendelesEntity = megrendelesRepository.save(megrendelesEntity);
         return modelMapper.map(megrendelesEntity, MegrendelesDto.class);
+    }
+
+    @Override
+    public List<MegrendelesVarolistaDto> osszesMegrendelesek(){
+        List<MegrendelesVarolistaDto> megrendelesDtos = new ArrayList<>();
+        for(MegrendelesVarolistaEntity megrendelesEntity : megrendelesVarolistaRepository.findAll())
+        {
+            megrendelesDtos.add(modelMapper.map(megrendelesEntity,MegrendelesVarolistaDto.class));
+        }
+        return megrendelesDtos;
+    }
+
+    @Override
+    public MegrendelesEntity hozzaadMegrendelesekhez(String id){
+        Optional<MegrendelesVarolistaEntity> entity = megrendelesVarolistaRepository.findById(id);
+        if(entity.isPresent()){
+            Optional<EtlapEntity> etlapEntity = etlapRepository.findById(entity.get().getMegrendeles_id());
+            if(etlapEntity.isPresent()){
+                MegrendelesEntity megrendelesEntity  = MegrendelesEntity.builder().
+                        asztalid(entity.get().getAsztalid()).
+                        megrendeles_neve(entity.get().getMegrendeles_neve()).
+                        megrendeles_db(entity.get().getMegrendeles_db()).
+                        megrendeles_ara(etlapEntity.get().getEtlap_ara()).build();
+
+                return megrendelesRepository.save(megrendelesEntity);
+            }
+        }
+        return null;
+    }
+
+
+    @Override
+    public void torlesMegrendelesVarolista(String id){
+        megrendelesVarolistaRepository.deleteById(id);
     }
 
 }

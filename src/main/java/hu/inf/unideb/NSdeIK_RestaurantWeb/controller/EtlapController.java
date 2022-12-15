@@ -1,9 +1,7 @@
 package hu.inf.unideb.NSdeIK_RestaurantWeb.controller;
 
 import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.EtlapDto;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.dto.SzemelyDto;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.enums.EtlapTipusok;
-import hu.inf.unideb.NSdeIK_RestaurantWeb.enums.SzemelyPosztok;
 import hu.inf.unideb.NSdeIK_RestaurantWeb.service.EtlapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,12 @@ public class EtlapController {
     public ResponseEntity<?> saveItal(@RequestBody EtlapDto etlapDto){
         etlapDto.setEtlap_tipus(EtlapTipusok.ITAL);
         return ResponseEntity.ok(etlapService.etlapMentes(etlapDto));
+    }
+
+    @DeleteMapping("/admin/etlapTorles/{id}")
+    public ResponseEntity<?> saveItal(@PathVariable("id") String id) {
+        etlapService.etlapTorles(id);
+        return new ResponseEntity<>("",HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/osszesEtlap")
