@@ -166,7 +166,6 @@ public class AsztalServiceImpl implements AsztalService {
         return null;
     }
 
-
     @Override
     public void torlesMegrendelesVarolista(String id){
         megrendelesVarolistaRepository.deleteById(id);

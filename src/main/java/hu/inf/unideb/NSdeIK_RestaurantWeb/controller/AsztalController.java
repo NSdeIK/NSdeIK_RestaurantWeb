@@ -62,8 +62,6 @@ public class AsztalController {
     @PostMapping("/veglegesites")
     public ResponseEntity<?> veglegesites(@RequestBody VeglegesitesDto veglegesitesDto){
         asztalService.veglegesites(veglegesitesDto);
-
-
         //*2022-12-15*//
         //Instant inst = Instant.parse(veglegesitesDto.getMikor_veglegesitette());
         //LocalDate date = inst.atZone(ZoneId.systemDefault()).toLocalDate();
